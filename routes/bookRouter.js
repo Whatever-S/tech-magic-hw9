@@ -10,33 +10,31 @@ bookRouter.get("/", (req, res)=>{
 })
 
 bookRouter.get("/:id", validateBookId, (req, res) => {
-    const bookId = req.params.id.slice(1);
-    
-    const book = books.find((book) => book.id == bookId);
-    console.log(book)
+    const book = req.book;
     res.send(book);
 });
 
 bookRouter.put("/:id", validateBookId, validateBookTitle, (req, res) => {
-    const bookId = req.params.id.slice(1);
-    const book = books.find((book) => book.id == bookId);
-
-    if (book) {
-        book.title = req.body.title;
-        res.send(`Title of book with id ${book.id} updated: ${book.title}`);
-    }
+    const book = req.book;
+    book.title = req.title;
+    res.send(`Title of book with id ${book.id} updated: ${book.title}`);
+           
 });
 
 bookRouter.post("/", validateNewBook, validateBookTitle, (req, res) => {
-    const {id, title, reviews} = req.body
+    const { reviews} = req.body
+    const id = req.id
+    const title = req.title
+    
     newBook = {
         "id": id, 
         "title": title, 
-        //"reviews": [...reviews]
     }
+    if (reviews)
+        newBook.reviews = reviews
+
     books.push(newBook)
-    res.send(`New book is succesfully created:
-    ${newBook}`)
+    res.send(`New book "${newBook.title}" is succesfully created`)
 })
 
 module.exports = bookRouter
