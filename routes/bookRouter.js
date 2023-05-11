@@ -18,7 +18,6 @@ bookRouter.put("/:id", validateBookId, validateBookTitle, (req, res) => {
     const book = req.book;
     book.title = req.title;
     res.send(`Title of book with id ${book.id} updated: ${book.title}`);
-           
 });
 
 bookRouter.post("/", validateNewBook, validateBookTitle, (req, res) => {
@@ -34,7 +33,7 @@ bookRouter.post("/", validateNewBook, validateBookTitle, (req, res) => {
         newBook.reviews = reviews
 
     books.push(newBook)
-    res.send(`New book "${newBook.title}" is succesfully created`)
+    res.status(201).send(`New book "${newBook.title}" is succesfully created`)
 })
 
 module.exports = bookRouter

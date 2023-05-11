@@ -29,8 +29,9 @@ reviewRouter.delete("/:id/reviews/:reviewId",  validateBookId, validateReviewsEx
     
 })
 
-reviewRouter.post("/:id/reviews/create", validateBookId, validateReviewsExist, validateNewReview, (req, res) => {
-    const reviews =  req.reviews
+//Using specific route "/create" for adding new review
+reviewRouter.post("/:id/reviews/create", validateBookId, validateNewReview, (req, res) => {
+    const book =  req.book
     const comment = req.comment;
     const reviewId = req.reviewId
   
@@ -38,9 +39,11 @@ reviewRouter.post("/:id/reviews/create", validateBookId, validateReviewsExist, v
       id: reviewId, 
       comment: comment
     };
-  
-    reviews.push(newReview);
-    res.send(`New review with id ${reviewId} added to current book`);
+
+
+    book.reviews.push(newReview);
+
+    res.status(201).send(`New review with id ${reviewId} added to current book`);
   });
   
 
