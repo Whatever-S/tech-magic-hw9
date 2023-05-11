@@ -1,5 +1,5 @@
 # tech-magic-hw9
-Created a simple server for books and their reviews server using Express.js.
+Created a simple server for books and their reviews using Express.js.
 
 There you can:
 1. Create book
