@@ -29,23 +29,29 @@ function validateReviewByIdExist(req, res, next) {
 
 //Middleware for validation input data from user about new review on a book
 function validateNewReview(req, res, next){
-    const { id , comment} = req.body;
-    const book = req.book
-
-    const exsistReview = book.reviews.find((review) => review.id == id);
-
-    if (!id){
-        res.status(400).send('Id is required');
+    const { id, comment } = req.body;
+    const book = req.book;
+  
+    const existingReview = book.reviews.find((review) => review.id == id);
+    const errors = [];
+  
+    if (!id) {
+      errors.push('Id is required');
+    } else if (existingReview) {
+      errors.push(`Review with this id ${id} already exists in the current book`);
     }
-    if(exsistReview){
-        res.status(400).send(`Review with this id ${id} is arleady exsist in current book `);
+  
+    if (!comment || comment.trim() === '') {
+      errors.push('Comment is required');
     }
-    if (!comment  || comment.trim() === ''){
-        res.status(400).send('Comment is required');
+  
+    if (errors.length > 0) {
+      res.status(400).send(errors.join('\n'));
+    } else {
+      req.reviewId = id;
+      req.comment = comment;
+      next();
     }
-    req.reviewId = id
-    req.comment = comment
-    next()
 }
 
 module.exports = {
